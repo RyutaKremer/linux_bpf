@@ -49,6 +49,7 @@ int main(){
 
     struct bpf_program bpf;
     pcap_t *handle;
+    // 初期化
     if ((handle = pcap_open_live("enp23s0f0", 4096, 1, 1000, buf)) == NULL) {
             //perror("pcap_open_live");
 	    printf("pcap_open_live\n");
@@ -57,6 +58,7 @@ int main(){
     if ((pcap_compile(handle,&bpf,"ip6",1,PCAP_NETMASK_UNKNOWN)) == -1) {
             perror("pcap_compile");
     }
+    // SOL_SOCKET : ソケットAPI層でオプションを操作する
     if (setsockopt(soc, SOL_SOCKET, SO_ATTACH_FILTER, (struct sock_fprog*)&bpf, sizeof(bpf)) == -1) {
 	    perror("setsocket");
     }
